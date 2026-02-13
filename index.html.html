@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Valentine's Day! 💕</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            background: linear-gradient(135deg, #ffc3e1 0%, #ff6b9d 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .container {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Background Photos */
+        .photo-background {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .bg-photo {
+            position: absolute;
+            width: 180px;
+            height: 180px;
+            border-radius: 15px;
+            object-fit: cover;
+            border: 3px solid white;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+            opacity: 0;
+            transition: opacity 1s ease;
+        }
+
+        .photo-background.show .bg-photo {
+            opacity: 0.85;
+            animation: floatPhoto 6s ease-in-out infinite;
+        }
+
+        @keyframes floatPhoto {
+            0%, 100% {
+                transform: translateY(0) rotate(var(--rotation));
+            }
+            50% {
+                transform: translateY(-15px) rotate(var(--rotation));
+            }
+        }
+
+        /* Photo positions */
+        .bg-photo:nth-child(1) { 
+            left: 8%; 
+            top: 15%; 
+            animation-delay: 0s;
+            --rotation: -8deg;
+            transform: rotate(-8deg);
+        }
+        .bg-photo:nth-child(2) { 
+            right: 10%; 
+            top: 20%; 
+            animation-delay: 1s;
+            --rotation: 5deg;
+            transform: rotate(5deg);
+        }
+        .bg-photo:nth-child(3) { 
+            left: 12%; 
+            bottom: 20%; 
+            animation-delay: 2s;
+            --rotation: 7deg;
+            transform: rotate(7deg);
+        }
+        .bg-photo:nth-child(4) { 
+            right: 8%; 
+            bottom: 25%; 
+            animation-delay: 3s;
+            --rotation: -5deg;
+            transform: rotate(-5deg);
+        }
+        .bg-photo:nth-child(5) { 
+            left: 5%; 
+            top: 50%; 
+            animation-delay: 4s;
+            --rotation: 10deg;
+            transform: rotate(10deg);
+        }
+        .bg-photo:nth-child(6) { 
+            right: 5%; 
+            top: 55%; 
+            animation-delay: 5s;
+            --rotation: -7deg;
+            transform: rotate(-7deg);
+        }
+
+        .envelope-wrapper {
+            position: absolute;
+            transition: all 1s ease;
+            cursor: pointer;
+            z-index: 50;
+        }
+
+        .envelope-wrapper.opened {
+            transform: translateY(150%) scale(0.7);
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .envelope {
+            position: relative;
+            width: 400px;
+            height: 250px;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .envelope-flap {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 0;
+            border-left: 200px solid transparent;
+            border-right: 200px solid transparent;
+            border-top: 150px solid #ff6b9d;
+            transform-origin: top center;
+            transition: transform 0.8s ease;
+            z-index: 10;
+        }
+
+        .envelope-wrapper.opening .envelope-flap {
+            transform: rotateX(180deg);
+        }
+
+        .envelope-back {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 0;
+            border-left: 200px solid transparent;
+            border-right: 200px solid transparent;
+            border-bottom: 150px solid #ffb3d9;
+        }
+
+        .letter-wrapper {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            pointer-events: none;
+            z-index: 100;
+        }
+
+        .letter-wrapper.show {
+            pointer-events: auto;
+        }
+
+        .letter {
+            width: 400px;
+            max-height: 85vh;
+            background: linear-gradient(to bottom, #fff5f8 0%, #ffffff 100%);
+            border-radius: 10px;
+            padding: 40px 35px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            border: 2px solid #ffe0ef;
+            transform: scale(0.6) translateY(50px);
+            opacity: 0;
+            transition: all 1.2s ease;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        /* Custom scrollbar */
+        .letter::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .letter::-webkit-scrollbar-track {
+            background: #ffe0ef;
+            border-radius: 10px;
+        }
+
+        .letter::-webkit-scrollbar-thumb {
+            background: #ff6b9d;
+            border-radius: 10px;
+        }
+
+        .letter::-webkit-scrollbar-thumb:hover {
+            background: #d63384;
+        }
+
+        .letter-wrapper.show .letter {
+            transform: scale(1) translateY(0);
+            opacity: 1;
+        }
+
+        .letter-content {
+            width: 100%;
+        }
+
+        .letter h1 {
+            color: #d63384;
+            text-align: center;
+            font-size: 32px;
+            margin-bottom: 25px;
+            text-shadow: 2px 2px 4px rgba(214, 51, 132, 0.2);
+        }
+
+        .letter p {
+            color: #666;
+            line-height: 1.9;
+            font-size: 16px;
+            text-align: left;
+            margin-bottom: 18px;
+        }
+
+        .letter p.greeting {
+            text-align: center;
+            font-weight: bold;
+            color: #d63384;
+            font-size: 18px;
+        }
+
+        .hearts {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .heart {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: #ff6b9d;
+            transform: rotate(45deg);
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .heart:before,
+        .heart:after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: #ff6b9d;
+            border-radius: 50%;
+        }
+
+        .heart:before {
+            top: -10px;
+            left: 0;
+        }
+
+        .heart:after {
+            left: 10px;
+            top: 0;
+        }
+
+        .hearts.show .heart {
+            animation: float 3s ease-in-out infinite;
+            opacity: 0.7;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0) rotate(45deg);
+            }
+            50% {
+                transform: translateY(-20px) rotate(45deg);
+            }
+        }
+
+        .heart:nth-child(1) { left: 10%; top: 20%; animation-delay: 0s; }
+        .heart:nth-child(2) { left: 20%; top: 60%; animation-delay: 0.5s; }
+        .heart:nth-child(3) { right: 10%; top: 30%; animation-delay: 1s; }
+        .heart:nth-child(4) { right: 20%; top: 70%; animation-delay: 1.5s; }
+        .heart:nth-child(5) { left: 50%; top: 10%; animation-delay: 2s; }
+        .heart:nth-child(6) { left: 30%; top: 40%; animation-delay: 2.5s; }
+        .heart:nth-child(7) { right: 30%; top: 50%; animation-delay: 3s; }
+
+        .click-hint {
+            position: absolute;
+            bottom: -60px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #fff;
+            font-size: 16px;
+            text-align: center;
+            opacity: 1;
+            animation: pulse 2s ease-in-out infinite;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+            transition: opacity 0.5s ease;
+        }
+
+        .click-hint.hide {
+            opacity: 0;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 0.6;
+            }
+            50% {
+                opacity: 1;
+                transform: translateX(-50%) scale(1.05);
+            }
+        }
+
+        .signature {
+            margin-top: 30px;
+            margin-bottom: 10px;
+            text-align: right;
+            color: #d63384;
+            font-style: italic;
+            font-size: 18px;
+        }
+
+        .scroll-hint {
+            text-align: center;
+            color: #ff6b9d;
+            font-size: 12px;
+            margin-top: 10px;
+            opacity: 0;
+            animation: fadeInOut 2s ease-in-out infinite;
+        }
+
+        .letter-wrapper.show .scroll-hint {
+            opacity: 1;
+        }
+
+        @keyframes fadeInOut {
+            0%, 100% { opacity: 0.4; }
+            50% { opacity: 1; }
+        }
+
+        @media (max-width: 768px) {
+            .bg-photo {
+                width: 120px;
+                height: 120px;
+            }
+
+            .envelope {
+                width: 300px;
+                height: 200px;
+            }
+
+            .envelope-flap {
+                border-left: 150px solid transparent;
+                border-right: 150px solid transparent;
+                border-top: 120px solid #ff6b9d;
+            }
+
+            .envelope-back {
+                border-left: 150px solid transparent;
+                border-right: 150px solid transparent;
+                border-bottom: 120px solid #ffb3d9;
+            }
+
+            .letter {
+                width: 90%;
+                max-width: 350px;
+                max-height: 80vh;
+                padding: 30px 25px;
+            }
+
+            .letter h1 {
+                font-size: 26px;
+            }
+
+            .letter p {
+                font-size: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Background Photos -->
+        <div class="photo-background" id="photoBackground">
+            <img src="photo1.jpg" alt="Memory 1" class="bg-photo" onerror="console.log('Photo 1 failed to load')">
+            <img src="photo2.jpg" alt="Memory 2" class="bg-photo" onerror="console.log('Photo 2 failed to load')">
+            <img src="photo3.jpg" alt="Memory 3" class="bg-photo" onerror="console.log('Photo 3 failed to load')">
+            <img src="photo4.jpg" alt="Memory 4" class="bg-photo" onerror="console.log('Photo 4 failed to load')">
+            <img src="photo5.jpg" alt="Memory 5" class="bg-photo" onerror="console.log('Photo 5 failed to load')">
+            <img src="photo6.jpg" alt="Memory 6" class="bg-photo" onerror="console.log('Photo 6 failed to load')">
+        </div>
+
+        <div class="envelope-wrapper" id="envelopeWrapper">
+            <div class="envelope">
+                <div class="envelope-flap"></div>
+                <div class="envelope-back"></div>
+            </div>
+            <div class="click-hint" id="clickHint">Click to open 💌</div>
+        </div>
+
+        <div class="letter-wrapper" id="letterWrapper">
+            <div class="letter" id="letter">
+                <div class="letter-content">
+                    <h1>💕 Happy Valentine's Day! 💕</h1>
+                    <p class="greeting">Hi Bebii,</p>
+                    <p>Happy Valentine's Day! 💖</p>
+                    <p>Even though we haven't met in person yet and we're miles apart, I want you to know that meeting you online was one of the best things that ever happened to me.</p>
+                    <p>You came into my life when I was at my lowest point. I was so down after everything that happened to me, but you... you were the reason I suddenly found the strength to stand up again.</p>
+                    <p>You lifted me up when I couldn't do it myself. Your words, your presence, and just knowing you're there for me made all the difference.</p>
+                    <p>Distance means nothing when someone means everything. I can't wait for the day we finally meet and I can hold you in my arms.</p>
+                    <p>Thank you for being my light in the darkness. Thank you for believing in me. Thank you for being you.</p>
+                    <p class="signature">Forever yours ❤️</p>
+                </div>
+                <div class="scroll-hint">↕ Scroll to read more</div>
+            </div>
+        </div>
+
+        <div class="hearts" id="hearts">
+            <div class="heart"></div>
+            <div class="heart"></div>
+            <div class="heart"></div>
+            <div class="heart"></div>
+            <div class="heart"></div>
+            <div class="heart"></div>
+            <div class="heart"></div>
+        </div>
+    </div>
+
+    <script>
+        const envelopeWrapper = document.getElementById('envelopeWrapper');
+        const letterWrapper = document.getElementById('letterWrapper');
+        const hearts = document.getElementById('hearts');
+        const clickHint = document.getElementById('clickHint');
+        const letter = document.getElementById('letter');
+        const photoBackground = document.getElementById('photoBackground');
+        
+        let isOpened = false;
+
+        envelopeWrapper.addEventListener('click', function() {
+            if (!isOpened) {
+                isOpened = true;
+                
+                // Hide click hint
+                clickHint.classList.add('hide');
+                
+                // Open envelope flap
+                this.classList.add('opening');
+                
+                // After 800ms, slide envelope away and show letter + photos
+                setTimeout(() => {
+                    this.classList.add('opened');
+                    letterWrapper.classList.add('show');
+                    hearts.classList.add('show');
+                    photoBackground.classList.add('show');
+                }, 800);
+            }
+        });
+
+        // Auto-hide scroll hint after scrolling
+        letter.addEventListener('scroll', function() {
+            const scrollHint = document.querySelector('.scroll-hint');
+            if (this.scrollTop > 20) {
+                scrollHint.style.opacity = '0';
+            }
+        });
+
+        // Debug: Check if images are loading
+        console.log('Page loaded. Photos should appear when envelope opens.');
+    </script>
+</body>
+</html>
